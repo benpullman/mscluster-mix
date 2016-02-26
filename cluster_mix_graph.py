@@ -1,4 +1,5 @@
 import networkx as nx
+import sys
 
 def generate_identification(filename):
     identifcation = {}
@@ -24,6 +25,6 @@ def generate_b_edges(filename):
             G.add_edge(e[0],e[1],weight=e[2])
     return G
 
-a_graph = generate_a_edges("cluster_data/cc_clusters.csv")
-b_graph = generate_b_edges("cluster_data/cluster_similarities.csv")
-ids = generate_identification("cluster_data/spectrum_ids.csv")
+a_graph = generate_a_edges(sys.argv[1])
+b_graph = generate_b_edges(sys.argv[2])
+ids = generate_identification(sys.argv[3])
