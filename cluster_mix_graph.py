@@ -15,17 +15,23 @@ class Cluster:
     def b_edges(self):
         return self.b_graph.edges()
     def split_at(self,e1,e2):
-        self.a_graph.remove_edge(e1,e2)
-        self.a_graph.remove_edge(e2,e1)
-        new_a_graphs = nx.connected_component_subgraphs(a_graph)
+        try:
+            self.a_graph.remove_edge(e1,e2)
+        except:
+            try:
+                self.a_graph.remove_edge(e2,e1)
+            except:
+                return []
+        new_a_graphs = nx.connected_component_subgraphs(self.a_graph)
         new_clusters = []
         for a in new_a_graphs:
             b = nx.Graph()
             for n1 in a:
                 for n2 in a:
                     if n1 != n2:
-                        new_b_graph.add_edge(n1,n2,weight=b_graph[n1][n2]['weight'])
-            new_clusters.append(Cluster(self.number + ".a",a,b))
+                        b.add_edge(n1,n2,weight=self.b_graph[n1][n2]['weight'])
+                        b.add_edge(n2,n1,weight=self.b_graph[n2][n1]['weight'])
+            new_clusters.append(Cluster(str(self.number) + ".a",a,b))
         return new_clusters
 
 def pickle_clusters(clusters,filename = "clusters.p"):
@@ -173,5 +179,9 @@ except:
 
 
 c = clusters[0]
-print(c.nodes())
+print(c.a_edges())
+for cluster in c.split_at('4to1.mzXML:8239', '16to1.mzXML:4775'):
+    print(cluster.nodes())
+    print(cluster.b_edges())
+
 # print(ids)
