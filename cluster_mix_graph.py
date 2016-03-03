@@ -33,6 +33,20 @@ class Cluster:
                         b.add_edge(n2,n1,weight=self.b_graph[n2][n1]['weight'])
             new_clusters.append(Cluster(str(self.number) + ".a",a,b))
         return new_clusters
+    def weight(self):
+        return avg_cc_weight(self.b_graph)
+    def id_as(self):
+        return {ids[n] for n in self.nodes()}
+    def lowest_weight(self):
+        weight_edges = []
+        for e in self.b_edges():
+            edge_weight = float(self.b_graph[e[0]][e[1]]['weight'])
+            weight_edges.append((edge_weight,e))
+        weight_edges.sort(key=lambda x: x[0])
+        if len(weight_edges) == 0:
+            return 1
+        else:
+            return weight_edges[0]
 
 def pickle_clusters(clusters,filename = "clusters.p"):
     with open(filename, "wb") as f:
@@ -43,6 +57,16 @@ def load_clusters(filename = "clusters.p"):
     with open(filename, "rb") as f:
         clusters = pickle.load(f)
     return clusters
+
+def pickle_ids(ids,filename = "ids.p"):
+    with open(filename, "wb") as f:
+        pickle.dump(ids,f)
+
+def load_ids(filename = "ids.p"):
+    ids = {}
+    with open(filename, "rb") as f:
+        ids = pickle.load(f)
+    return ids
 
 def generate_identification(filename):
     identifcation = {}
@@ -80,7 +104,7 @@ def cc_weights(cc):
 
 def avg_cc_weight(cc):
     weights = cc_weights(cc)
-    weight_result = 0
+    weight_result = 1
     try:
         weight_result = sum(weights)/len(weights)
     except:
@@ -166,9 +190,11 @@ try:
     mixture_a = seperate_mixtures(a_graph)
     mixture_b = seperate_mixtures(b_graph)
     clusters = link_edges(mixture_a,mixture_b)
+    pickle_clusters(clusters)
+    pickle_ids(ids)
 except:
     clusters = load_clusters()
-
+    ids = load_ids()
 
 # for n in a_graph.nodes():
 #     try:
@@ -178,10 +204,17 @@ except:
 #         s += 1
 
 
-c = clusters[0]
-print(c.a_edges())
-for cluster in c.split_at('4to1.mzXML:8239', '16to1.mzXML:4775'):
-    print(cluster.nodes())
-    print(cluster.b_edges())
+c = clusters[10]
+# print(c.a_edges())
+print(c.lowest_weight())
+print(c.id_as())
+for cluster in c.split_at(c.a_edges()[0][0], c.a_edges()[0][1]):
+    print(cluster.id_as())
+    # print(cluster.nodes())
+    # print(cluster.b_edges())
+    # print(cluster.weight())
+    print(cluster.lowest_weight())
+
+
 
 # print(ids)
