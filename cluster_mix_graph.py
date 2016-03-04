@@ -35,8 +35,16 @@ class Cluster:
         return new_clusters
     def weight(self):
         return avg_cc_weight(self.b_graph)
+    # def id_as(self):
+    #     return {ids[n] for n in self.nodes()}
     def id_as(self):
-        return {ids[n] for n in self.nodes()}
+        result_ids = set()
+        for n in self.nodes():
+            try:
+                result_ids.add(ids[n])
+            except:
+                pass
+        return result_ids
     def lowest_weight(self):
         weight_edges = []
         for e in self.b_edges():
@@ -98,7 +106,7 @@ def cc_weights(cc):
     weights = []
     for e in cc.edges():
         edge_weight = float(cc[e[0]][e[1]]['weight'])
-        if edge_weight < 1:
+        if edge_weight <= 1:
             weights.append(edge_weight)
     return weights
 
