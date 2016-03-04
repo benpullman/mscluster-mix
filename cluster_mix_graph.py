@@ -14,7 +14,7 @@ class Cluster:
         return self.a_graph.edges()
     def b_edges(self):
         return self.b_graph.edges()
-    def split_at(self,e1,e2):
+    def split_at(self,e1,e2,l):
         try:
             self.a_graph.remove_edge(e1,e2)
         except:
@@ -24,14 +24,14 @@ class Cluster:
                 return []
         new_a_graphs = nx.connected_component_subgraphs(self.a_graph)
         new_clusters = []
-        for a in new_a_graphs:
+        for i,a in enumerate(new_a_graphs):
             b = nx.Graph()
             for n1 in a:
                 for n2 in a:
                     if n1 != n2:
                         b.add_edge(n1,n2,weight=self.b_graph[n1][n2]['weight'])
                         b.add_edge(n2,n1,weight=self.b_graph[n2][n1]['weight'])
-            new_clusters.append(Cluster(str(self.number) + ".a",a,b))
+            new_clusters.append(Cluster(str(self.number) + "." + chr(l + i + 97),a,b))
         return new_clusters
     def weight(self):
         return avg_cc_weight(self.b_graph)
