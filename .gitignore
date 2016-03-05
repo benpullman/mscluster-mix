@@ -63,6 +63,6 @@ target/
 
 cluster_data/*
 
-cluster.p
+clusters.p
 
 ids.p
