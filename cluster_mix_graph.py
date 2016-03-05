@@ -204,16 +204,16 @@ except:
 #         s += 1
 
 
-c = clusters[10]
+print(len(clusters))
 # print(c.a_edges())
-print(c.lowest_weight())
-print(c.id_as())
-for cluster in c.split_at(c.a_edges()[0][0], c.a_edges()[0][1]):
-    print(cluster.id_as())
-    # print(cluster.nodes())
-    # print(cluster.b_edges())
-    # print(cluster.weight())
-    print(cluster.lowest_weight())
+# print(c.lowest_weight())
+# print(c.id_as())
+# for cluster in c.split_at(c.a_edges()[0][0], c.a_edges()[0][1]):
+#     print(cluster.id_as())
+#     # print(cluster.nodes())
+#     # print(cluster.b_edges())
+#     # print(cluster.weight())
+#     print(cluster.lowest_weight())
 
 
 

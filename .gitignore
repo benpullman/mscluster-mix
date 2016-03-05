@@ -60,3 +60,9 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+cluster_data/*
+
+cluster.p
+
+ids.p
