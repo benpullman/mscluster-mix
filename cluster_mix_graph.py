@@ -2,18 +2,21 @@ import networkx as nx
 import sys
 from collections import Counter
 import pickle
+import numpy as np
 
 class Cluster:
     def __init__(self,number,a_graph,b_graph):
         self.number = number
         self.a_graph = a_graph
         self.b_graph = b_graph
+        self.a_index = {edge: i for i,edge in enumerate(a_graph.edges())}
+        self.b_index = {edge: i for i,edge in enumerate(b_graph.edges())}
     def nodes(self):
         return self.a_graph.nodes()
-    def a_edges(self):
-        return self.a_graph.edges()
-    def b_edges(self):
-        return self.b_graph.edges()
+    def a_edges(self,nbunch = None):
+        return self.a_graph.edges(nbunch)
+    def b_edges(self,nbunch = None):
+        return self.b_graph.edges(nbunch)
     def split_at(self,e1,e2,l):
         try:
             self.a_graph.remove_edge(e1,e2)
@@ -204,17 +207,18 @@ except:
 #         s += 1
 
 
-print(len(clusters))
-# print(c.a_edges())
-# print(c.lowest_weight())
-# print(c.id_as())
-# for cluster in c.split_at(c.a_edges()[0][0], c.a_edges()[0][1]):
-#     print(cluster.id_as())
-#     # print(cluster.nodes())
-#     # print(cluster.b_edges())
-#     # print(cluster.weight())
-#     print(cluster.lowest_weight())
-
+c = clusters[1]
+E = np.zeros((len(c.b_edges()),len(c.a_edges())),dtype=np.int)
+# print(E)
+# print(c.nodes())
+# # print(c.lowest_weight())
+# # print(c.id_as())
+# # for cluster in c.split_at(c.a_edges()[0][0], c.a_edges()[0][1]):
+# #     print(cluster.id_as())
+# #     # print(cluster.nodes())
+# #     # print(cluster.b_edges())
+# #     # print(cluster.weight())
+# #     print(cluster.lowest_weight())
 
 
 # print(ids)
